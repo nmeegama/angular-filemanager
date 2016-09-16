@@ -129,6 +129,16 @@
             return this.apiHandler.createFolder(fileManagerConfig.createFolderUrl, path);
         };
 
+
+        ApiMiddleware.prototype.getPDFFile = function(item) {
+            var itemPath = this.getFilePath(item);
+            
+            return this.apiHandler.getPDFFile(
+                fileManagerConfig.downloadFileUrl,
+                itemPath
+            );
+        };
+
         return ApiMiddleware;
 
     }]);

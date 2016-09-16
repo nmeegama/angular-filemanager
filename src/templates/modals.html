@@ -9,7 +9,11 @@
         <h4 class="modal-title">{{"preview" | translate}}</h4>
       </div>
       <div class="modal-body">
+
         <div class="text-center">
+            <div id="pdfpreview-target" class="preview" >
+                <iframe class="prev" id="pdf-frame" src="" ></iframe>
+            </div>
           <img id="imagepreview-target" class="preview" alt="{{singleSelection().model.name}}" ng-class="{'loading': apiMiddleware.apiHandler.inprocess}">
           <span class="label label-warning" ng-show="apiMiddleware.apiHandler.inprocess">{{'loading' | translate}} ...</span>
         </div>

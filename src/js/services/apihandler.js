@@ -224,6 +224,15 @@
             return path && [apiUrl, $.param(data)].join('?');
         };
 
+        ApiHandler.prototype.getPDFDownloadUrl = function(apiUrl, path) {
+            var data = {
+                action: 'get_pdf_file',
+                path: path
+            };
+            return path && [apiUrl, $.param(data)].join('?');
+        };
+
+
         ApiHandler.prototype.download = function(apiUrl, itemPath, toFilename, downloadByAjax, forceNewWindow) {
             var self = this;
             var url = this.getUrl(apiUrl, itemPath);
@@ -361,6 +370,35 @@
             });
         
             return deferred.promise;
+        };
+
+        ApiHandler.prototype.getPDFFile = function(apiUrl, itemPath) {
+            var self = this;
+            var url = this.getPDFDownloadUrl(apiUrl, itemPath);
+
+            var deferred = $q.defer();
+            self.inprocess = true;
+            $http.get(url).success(function (data, code) {
+                self.deferredHandler(data, deferred, code);
+            }).error(function (data, code) {
+                self.deferredHandler(data, deferred, code, $translate.instant('error_get_pdf_file'));
+            })['finally'](function () {
+                self.inprocess = false;
+            });
+            return deferred.promise;
+
+            // var deferred = $q.defer();
+            // self.inprocess = true;
+            // $http.get(url).success(function(data) {
+            //     var bin = new $window.Blob([data]);
+            //     deferred.resolve(data);
+            //
+            // }).error(function(data, code) {
+            //     self.deferredHandler(data, deferred, code, $translate.instant('error_downloading'));
+            // })['finally'](function() {
+            //     self.inprocess = false;
+            // });
+            // return deferred.promise;
         };
 
         return ApiHandler;
